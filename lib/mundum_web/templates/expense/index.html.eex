@@ -1,0 +1,32 @@
+<h2>Listing Expenses</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Amount</th>
+      <th>Description</th>
+      <th>Date incurred</th>
+      <th>Amortize through</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for expense <- @expenses do %>
+    <tr>
+      <td><%= expense.amount %></td>
+      <td><%= expense.description %></td>
+      <td><%= expense.date_incurred %></td>
+      <td><%= expense.amortize_through %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: expense_path(@conn, :show, expense), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: expense_path(@conn, :edit, expense), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: expense_path(@conn, :delete, expense), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Expense", to: expense_path(@conn, :new) %></span>

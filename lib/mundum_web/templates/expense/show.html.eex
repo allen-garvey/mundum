@@ -1,0 +1,28 @@
+<h2>Show Expense</h2>
+
+<ul>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @expense.amount %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @expense.description %>
+  </li>
+
+  <li>
+    <strong>Date incurred:</strong>
+    <%= @expense.date_incurred %>
+  </li>
+
+  <li>
+    <strong>Amortize through:</strong>
+    <%= @expense.amortize_through %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: expense_path(@conn, :edit, @expense) %></span>
+<span><%= link "Back", to: expense_path(@conn, :index) %></span>

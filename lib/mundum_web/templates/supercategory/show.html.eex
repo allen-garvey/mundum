@@ -1,0 +1,13 @@
+<h2>Show Supercategory</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @supercategory.name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: supercategory_path(@conn, :edit, @supercategory) %></span>
+<span><%= link "Back", to: supercategory_path(@conn, :index) %></span>

@@ -1,0 +1,14 @@
+<div class="jumbotron">
+  <h1>Mundum Expense Tracker</h1>
+</div>
+
+<div>
+  <ul class="fields-list">
+    <%= for field <- @fields do %>
+        <li>
+        	<%= link String.capitalize(MundumWeb.SharedView.naive_pluralize(field)), to: MundumWeb.SharedView.path_for_item(@conn, field, :index), class: "field-title" %>
+        	<%= link "Add", to: MundumWeb.SharedView.path_for_item(@conn, field, :new), class: "addlink" %>
+        </li>
+    <% end %>
+</ul>
+</div>
