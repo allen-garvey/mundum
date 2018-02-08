@@ -3,25 +3,47 @@ defmodule MundumWeb.SupercategoryController do
 
   alias Mundum.Editor
   alias Mundum.Editor.Supercategory
+  
+  def custom_render(conn, template, assigns) do
+    custom_render(conn, view_module(conn), template, assigns)
+  end
+
+  def custom_render(conn, view_module, template, assigns) do
+    assigns = [{:item_name_singular, "supercategory"}] ++ assigns
+    render(conn, view_module, template, assigns)
+  end
 
   def index(conn, _params) do
     supercategories = Editor.list_supercategories()
     render(conn, "index.html", supercategories: supercategories)
   end
 
-  def new(conn, _params) do
+  def new(conn, params) do
     changeset = Editor.change_supercategory(%Supercategory{})
-    render(conn, "new.html", changeset: changeset)
+    new_page(conn, changeset, params)
   end
 
-  def create(conn, %{"supercategory" => supercategory_params}) do
+  def new_page(conn, changeset, _params) do
+    custom_render(conn, "new.html", changeset: changeset)
+  end
+  
+  def create_succeeded(conn, _supercategory, "true") do
+    changeset = Editor.change_supercategory(%Supercategory{})
+    new_page(conn, changeset, nil)
+  end
+
+  def create_succeeded(conn, supercategory, _save_another) do
+    redirect(conn, to: supercategory_path(conn, :show, supercategory))
+  end
+
+  def create(conn, %{"supercategory" => supercategory_params, "save_another" => save_another}) do
     case Editor.create_supercategory(supercategory_params) do
       {:ok, supercategory} ->
         conn
-        |> put_flash(:info, "Supercategory created successfully.")
-        |> redirect(to: supercategory_path(conn, :show, supercategory))
+        |> put_flash(:info, "#{MundumWeb.SupercategoryView.to_s(supercategory)} created successfully.")
+        |> create_succeeded(supercategory, save_another)
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        new_page(conn, changeset, nil)
     end
   end
 

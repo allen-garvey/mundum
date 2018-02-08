@@ -33,7 +33,7 @@ defmodule MundumWeb.ExpenseController do
   end
 
   def create_succeeded(conn, expense, "true") do
-    changeset = Editor.change_quote(%Expense{date_incurred: expense.date_incurred, category_id: expense.category_id})
+    changeset = Editor.change_expense(%Expense{date_incurred: expense.date_incurred, category_id: expense.category_id})
     new_page(conn, changeset, nil)
   end
 
@@ -45,7 +45,7 @@ defmodule MundumWeb.ExpenseController do
     case Editor.create_expense(expense_params) do
       {:ok, expense} ->
         conn
-        |> put_flash(:info, "Expense created successfully.")
+        |> put_flash(:info, "#{MundumWeb.ExpenseView.to_s(expense)} created successfully.")
         |> create_succeeded(expense, save_another)
       {:error, %Ecto.Changeset{} = changeset} ->
         new_page(conn, changeset, nil)
