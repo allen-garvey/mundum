@@ -28,14 +28,24 @@ defmodule MundumWeb.FormHelpers do
 		number_input(f, field, class: "form-control", required: field_required?(field, required_fields))
 	end
 	
+	def form_input(f, :money, field, required_fields, nil) do
+		number_input(f, field, class: "form-control", required: field_required?(field, required_fields), step: "0.01", min: "0.01")
+	end
+	
 	def form_input(f, :text, field, required_fields, nil) do
 		textarea(f, field, class: "form-control", required: field_required?(field, required_fields), cols: 80, rows: 10)
 	end
 	
 	def form_input(f, :date, field, required_fields, nil) do
-		date_select(f, field, class: "form-control", required: field_required?(field, required_fields), year: [options: 2016..DateTime.utc_now.year], builder: fn b ->
+		is_required = field_required?(field, required_fields)
+		prompt = case is_required do
+			true -> []
+			false -> [prompt: ""]
+		end
+	
+		date_select(f, field, class: "form-control", required: is_required, year: [options: 2016..DateTime.utc_now.year] ++ prompt, month: prompt, day: prompt, builder: fn b ->
 		   ~e"""
-		    Date: <%= b.(:month, []) %> / <%= b.(:day, []) %> / <%= b.(:year, []) %>
+		    <%= b.(:month, []) %> / <%= b.(:day, []) %> / <%= b.(:year, []) %>
 		    """ 
 		    end
 		 )

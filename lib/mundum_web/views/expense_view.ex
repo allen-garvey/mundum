@@ -39,7 +39,7 @@ defmodule MundumWeb.ExpenseView do
   
   def form_fields(related_fields) do
     [
-        {:amount, :number, nil},
+        {:amount, :money, nil},
         {:description, :string, nil},
         {:category_id, :select, related_fields[:categories]},
         {:date_incurred, :date, nil},
