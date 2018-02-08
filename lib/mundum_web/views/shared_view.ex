@@ -98,7 +98,12 @@ defmodule MundumWeb.SharedView do
 	end
 	
 	def form_input(f, :date, field, required_fields, nil) do
-		date_select(f, field, class: "form-control", required: field_required?(field, required_fields), year: [options: 2016..DateTime.utc_now.year])
+		date_select(f, field, class: "form-control", required: field_required?(field, required_fields), year: [options: 2016..DateTime.utc_now.year], builder: fn b ->
+		   ~e"""
+		    Date: <%= b.(:month, []) %> / <%= b.(:day, []) %> / <%= b.(:year, []) %>
+		    """ 
+		    end
+		 )
 	end
 	
 	def form_input(f, :select, field, required_fields, items) do
