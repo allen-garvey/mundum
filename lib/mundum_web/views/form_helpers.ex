@@ -42,8 +42,13 @@ defmodule MundumWeb.FormHelpers do
 			true -> []
 			false -> [prompt: ""]
 		end
+		
+		default = case is_required do
+			true -> Date.utc_today()
+			false -> nil
+		end
 	
-		date_select(f, field, class: "form-control", required: is_required, year: [options: 2016..DateTime.utc_now.year] ++ prompt, month: prompt, day: prompt, builder: fn b ->
+		date_select(f, field, class: "form-control", required: is_required, default: default, year: [options: 2016..DateTime.utc_now.year] ++ prompt, month: prompt, day: prompt, builder: fn b ->
 		   ~e"""
 		    <%= b.(:month, []) %> / <%= b.(:day, []) %> / <%= b.(:year, []) %>
 		    """ 
