@@ -6,7 +6,7 @@
   <% end %>
 
   <%= for { field, type, items } <- @form_fields do %>
-      <div class="form-group">
+      <div class="form-group <%= container_error_class(f, field) %>">
           <%= form_item_label(f, field, @required_fields) %>
           <%= form_input(f, type, field, @required_fields, items) %>
           <%= error_tag(f, field) %>

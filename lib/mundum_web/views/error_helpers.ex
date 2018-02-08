@@ -4,12 +4,29 @@ defmodule MundumWeb.ErrorHelpers do
   """
 
   use Phoenix.HTML
-
+  
+  def container_error_class(form, field) do
+    case has_errors?(form, field) do
+      true -> "has-errors"
+      false -> ""
+    end
+  end
+  
+  def has_errors?(form, field) do
+    errors_for_field(form, field)
+      |> Enum.empty?
+      |> Kernel.not
+  end
+  
+  def errors_for_field(form, field) do
+    Keyword.get_values(form.errors, field)
+  end
+  
   @doc """
   Generates tag for inlined form input errors.
   """
   def error_tag(form, field) do
-    Enum.map(Keyword.get_values(form.errors, field), fn (error) ->
+    Enum.map(errors_for_field(form, field), fn (error) ->
       content_tag :span, translate_error(error), class: "help-block"
     end)
   end
