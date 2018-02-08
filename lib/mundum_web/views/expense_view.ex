@@ -18,7 +18,7 @@ defmodule MundumWeb.ExpenseView do
 
   def shared_form_assigns(assigns) do
     %{
-        required_fields: Mundum.Editor.Category.required_fields(), 
+        required_fields: Mundum.Editor.Expense.required_fields(), 
         form_fields: form_fields(assigns[:related_fields])
       }
   end
