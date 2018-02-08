@@ -6,8 +6,8 @@
   <ul class="fields-list">
     <%= for field <- @fields do %>
         <li>
-        	<%= link String.capitalize(MundumWeb.SharedView.naive_pluralize(field)), to: MundumWeb.SharedView.path_for_item(@conn, field, :index), class: "field-title" %>
-        	<%= link "Add", to: MundumWeb.SharedView.path_for_item(@conn, field, :new), class: "addlink" %>
+        	<%= link String.capitalize(naive_pluralize(field)), to: path_for_item(@conn, field, :index), class: "field-title" %>
+        	<%= link "Add", to: path_for_item(@conn, field, :new), class: "addlink" %>
         </li>
     <% end %>
 </ul>
