@@ -15,7 +15,7 @@ defmodule MundumWeb.SupercategoryController do
 
   def index(conn, _params) do
     supercategories = Editor.list_supercategories()
-    render(conn, "index.html", supercategories: supercategories)
+    custom_render(conn, "index.html", supercategories: supercategories)
   end
 
   def new(conn, _params) do
