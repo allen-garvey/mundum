@@ -9,8 +9,7 @@ defmodule MundumWeb.CategoryView do
   def render("edit.html", assigns) do
     assigns = Map.merge(assigns, 
       %{
-        item: assigns[:category],
-        item_display_name: to_s(assigns[:category])
+        item_display_name: to_s(assigns[:item])
       }
     ) |> Map.merge(shared_form_assigns(assigns))
     render MundumWeb.SharedView, "edit.html", assigns

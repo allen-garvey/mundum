@@ -9,8 +9,7 @@ defmodule MundumWeb.SupercategoryView do
   def render("edit.html", assigns) do
     assigns = Map.merge(assigns, 
       %{
-        item: assigns[:supercategory],
-        item_display_name: to_s(assigns[:supercategory])
+        item_display_name: to_s(assigns[:item])
       }
     ) |> Map.merge(shared_form_assigns())
     render MundumWeb.SharedView, "edit.html", assigns

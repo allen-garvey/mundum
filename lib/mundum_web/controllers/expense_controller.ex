@@ -23,18 +23,22 @@ defmodule MundumWeb.ExpenseController do
     [categories: categories]
   end
 
-  def new_page(conn, changeset, _params) do
+  def new_page(conn, changeset) do
     custom_render(conn, "new.html", changeset: changeset, related_fields: related_fields())
   end
+  
+  def edit_page(conn, changeset, expense) do
+    custom_render(conn, "edit.html", changeset: changeset, related_fields: related_fields(), item: expense)
+  end
 
-  def new(conn, params) do
+  def new(conn, _params) do
     changeset = Editor.change_expense(%Expense{})
-    new_page(conn, changeset, params)
+    new_page(conn, changeset)
   end
 
   def create_succeeded(conn, expense, "true") do
     changeset = Editor.change_expense(%Expense{date_incurred: expense.date_incurred, category_id: expense.category_id})
-    new_page(conn, changeset, nil)
+    new_page(conn, changeset)
   end
 
   def create_succeeded(conn, expense, _save_another) do
@@ -48,7 +52,7 @@ defmodule MundumWeb.ExpenseController do
         |> put_flash(:info, "#{MundumWeb.ExpenseView.to_s(expense)} created successfully.")
         |> create_succeeded(expense, save_another)
       {:error, %Ecto.Changeset{} = changeset} ->
-        new_page(conn, changeset, nil)
+        new_page(conn, changeset)
     end
   end
 
@@ -60,7 +64,7 @@ defmodule MundumWeb.ExpenseController do
   def edit(conn, %{"id" => id}) do
     expense = Editor.get_expense!(id)
     changeset = Editor.change_expense(expense)
-    render(conn, "edit.html", expense: expense, changeset: changeset)
+    edit_page(conn, changeset, expense)
   end
 
   def update(conn, %{"id" => id, "expense" => expense_params}) do
@@ -69,10 +73,10 @@ defmodule MundumWeb.ExpenseController do
     case Editor.update_expense(expense, expense_params) do
       {:ok, expense} ->
         conn
-        |> put_flash(:info, "Expense updated successfully.")
+        |> put_flash(:info, "#{MundumWeb.ExpenseView.to_s(expense)} updated successfully.")
         |> redirect(to: expense_path(conn, :show, expense))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", expense: expense, changeset: changeset)
+        edit_page(conn, changeset, expense)
     end
   end
 

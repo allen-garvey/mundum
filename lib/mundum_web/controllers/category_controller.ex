@@ -23,18 +23,22 @@ defmodule MundumWeb.CategoryController do
     [supercategories: supercategories]
   end
 
-  def new_page(conn, changeset, _params) do
+  def new_page(conn, changeset) do
     custom_render(conn, "new.html", changeset: changeset, related_fields: related_fields())
   end
+  
+  def edit_page(conn, changeset, category) do
+    custom_render(conn, "edit.html", changeset: changeset, related_fields: related_fields(), item: category)
+  end
 
-  def new(conn, params) do
+  def new(conn, _params) do
     changeset = Editor.change_category(%Category{})
-    new_page(conn, changeset, params)
+    new_page(conn, changeset)
   end
   
   def create_succeeded(conn, category, "true") do
     changeset = Editor.change_category(%Category{supercategory_id: category.supercategory_id})
-    new_page(conn, changeset, nil)
+    new_page(conn, changeset)
   end
 
   def create_succeeded(conn, category, _save_another) do
@@ -48,7 +52,7 @@ defmodule MundumWeb.CategoryController do
         |> put_flash(:info, "#{MundumWeb.CategoryView.to_s(category)} created successfully.")
         |> create_succeeded(category, save_another)
       {:error, %Ecto.Changeset{} = changeset} ->
-        new_page(conn, changeset, nil)
+        new_page(conn, changeset)
     end
   end
 
@@ -60,7 +64,7 @@ defmodule MundumWeb.CategoryController do
   def edit(conn, %{"id" => id}) do
     category = Editor.get_category!(id)
     changeset = Editor.change_category(category)
-    render(conn, "edit.html", category: category, changeset: changeset)
+    edit_page(conn, changeset, category)
   end
 
   def update(conn, %{"id" => id, "category" => category_params}) do
@@ -69,10 +73,10 @@ defmodule MundumWeb.CategoryController do
     case Editor.update_category(category, category_params) do
       {:ok, category} ->
         conn
-        |> put_flash(:info, "Category updated successfully.")
+        |> put_flash(:info, "#{MundumWeb.CategoryView.to_s(category)} updated successfully.")
         |> redirect(to: category_path(conn, :show, category))
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", category: category, changeset: changeset)
+        edit_page(conn, changeset, category)
     end
   end
 
