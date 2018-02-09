@@ -1,5 +1,6 @@
 defmodule MundumWeb.ExpenseView do
   use MundumWeb, :view
+  import MundumWeb.DateHelpers
   
   def render("new.html", assigns) do
     assigns = Map.merge(assigns, shared_form_assigns(assigns))
@@ -29,7 +30,7 @@ defmodule MundumWeb.ExpenseView do
   
   def item_columns(_conn, expense) do
     [
-        {"date", MundumWeb.SharedView.date_to_iso_string(expense.date_incurred)},
+        {"date", date_to_iso_string(expense.date_incurred)},
         {"amount", expense.amount},
         {"description", expense.description},
         {"category", MundumWeb.CategoryView.to_s(expense.category)}, 
