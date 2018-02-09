@@ -1,5 +1,0 @@
-<h2>New Supercategory</h2>
-
-<%= render "form.html", Map.put(assigns, :action, supercategory_path(@conn, :create)) %>
-
-<span><%= link "Back", to: supercategory_path(@conn, :index) %></span>
