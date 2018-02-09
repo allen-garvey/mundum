@@ -13,6 +13,7 @@ defmodule MundumWeb.SharedView do
             %{
                 title: "Add " <> item_name_singular,
                 action: path_for_item(conn, item_name_singular, :create),
+                form_type: :create,
             }
          )
       
@@ -31,6 +32,7 @@ defmodule MundumWeb.SharedView do
                 back_link_title: "Back to " <> item_display_name,
                 back_link_path: path_for_item(conn, item_name_singular, :show, item),
                 action: path_for_item(conn, item_name_singular, :update, item),
+                form_type: :edit,
             }
         )
         
