@@ -18,7 +18,7 @@ defmodule Mundum.Editor do
 
   """
   def list_supercategories do
-    Repo.all(Supercategory)
+    Repo.all(from(Supercategory, order_by: :name))
   end
 
   @doc """
@@ -114,7 +114,7 @@ defmodule Mundum.Editor do
 
   """
   def list_categories do
-    Repo.all(Category)
+    Repo.all(from(Category, order_by: :name))
   end
 
   @doc """
@@ -210,7 +210,7 @@ defmodule Mundum.Editor do
 
   """
   def list_expenses do
-    Repo.all(Expense)
+    Repo.all(from(Expense, order_by: [desc: :date_incurred, desc: :id]))
   end
 
   @doc """
